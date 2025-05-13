@@ -54,7 +54,8 @@ public class App {
     for (String loc: locations) {
       long start = System.nanoTime();
       bst.insert(loc);
-      bstInsertTime += System.nanoTime() - start;
+      long end = System.nanoTime();
+      bstInsertTime += end - start;
     }
 
     // Tambahkan sisi antara semua simpul A-Z
@@ -71,6 +72,7 @@ public class App {
     // Input pengguna
     System.out.print("Masukkan lokasi awal: ");
     String startName = scanner.nextLine();
+    
     System.out.print("Masukkan lokasi tujuan: ");
     String endName = scanner.nextLine();
 
@@ -88,10 +90,12 @@ public class App {
       scanner.close();
       return;
     }
-    bstSearchTime = System.nanoTime() - bstSearchTime;
+    long bstSearchTimeEnd = System.nanoTime();
+    bstSearchTime = bstSearchTimeEnd - bstSearchTime;
 
     // Cari vertex berdasarkan nama
     Vertex start = null, end = null;
+    
     for (Vertex vertex : Arrays.asList(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)) {
       if (vertex.toString().equals(startName)) start = vertex;
       if (vertex.toString().equals(endName)) end = vertex;
@@ -107,7 +111,8 @@ public class App {
     long dijkstraTime = System.nanoTime();
     Dijkstra dijkstra = new Dijkstra(start);
     ArrayList<Vertex> path = dijkstra.getShortestPathTo(end);
-    dijkstraTime = System.nanoTime() - dijkstraTime;
+    long dijkstraTimeEnd = System.nanoTime();
+    dijkstraTime = dijkstraTimeEnd - dijkstraTime;
 
     // Hitung jarak total
     double totalDistance = 0;
