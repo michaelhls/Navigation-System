@@ -152,4 +152,10 @@ public class BST {
         this.root.breadth();
         System.out.println();
     }
+
+    // Clear binary search tree
+    // Karena Java memiliki garbage collector, object lama akan tetap dihapus
+    public void clear() {
+        this.root = null;
+    }
 }

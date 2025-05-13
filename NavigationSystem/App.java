@@ -3,6 +3,19 @@ package NavigationSystem;
 import java.util.*;
 
 public class App {
+  // Shuffle array
+  private static void shuffle(String[] array) {
+    final Random rand = new Random();
+
+    for (int i = array.length - 1; i > 0; i--) {
+      final int randomIndex = rand.nextInt(i + 1);
+      final String temp = array[randomIndex];
+
+      array[randomIndex] = array[i];
+      array[i] = temp;
+    }
+  }
+
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     BST bst = new BST();
@@ -52,10 +65,16 @@ public class App {
     
     // Sesi warmup untuk JVM
     for (int warmupIndex = 0; warmupIndex < 1000; warmupIndex++) {
+      shuffle(locations);
+
       for (String loc: locations) {
         bst.insert(loc);
       }
+
+      bst.clear();
     }
+
+    shuffle(locations);
     
     long bstInsertTime = 0;
     

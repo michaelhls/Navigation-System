@@ -30,18 +30,19 @@ public abstract class HashTable<K, V> {
     }
   }
 
-  private ArrayList<ArrayList<Entry<K, V>>> table;
+  private ArrayList<Entry<K, V>>[] table;
 
+  @SuppressWarnings("unchecked")
   public HashTable(final int size) {
-    this.table = new ArrayList<>(size);
+    this.table = new ArrayList[size];
 
     for (int i = 0; i < size; i++) {
-      this.table.add(new ArrayList<>());
+      this.table[i] = new ArrayList<>();
     }
   }
 
   public void set(final K key, final V value) {
-    final ArrayList<Entry<K, V>> entries = this.table.get(this.getIndex(key));
+    final ArrayList<Entry<K, V>> entries = this.table[this.getIndex(key)];
 
     for (final Entry<K, V> entry: entries) {
       if (entry.key == key) {
@@ -54,7 +55,7 @@ public abstract class HashTable<K, V> {
   }
 
   public V get(final K key) {
-    for (final Entry<K, V> entry: this.table.get(this.getIndex(key))) {
+    for (final Entry<K, V> entry: this.table[this.getIndex(key)]) {
       if (entry.key == key) {
         return entry.value;
       }
@@ -64,13 +65,13 @@ public abstract class HashTable<K, V> {
   }
 
   public void remove(final K key) throws IllegalArgumentException {
-    this.table.get(this.getIndex(key)).removeIf(entry -> entry.key == key);
+    this.table[this.getIndex(key)].removeIf(entry -> entry.key == key);
   }
 
   private int getIndex(final K key) throws IllegalArgumentException {
     final int index = this.hashFunction(key);
 
-    if (index < 0 || index >= this.table.size()) {
+    if (index < 0 || index >= this.table.length) {
       throw new IllegalArgumentException("Error: Telah mendapatkan argumen key dengan hash index yang tidak valid: " + index);
     }
 
