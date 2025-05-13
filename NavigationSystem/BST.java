@@ -1,5 +1,8 @@
 package NavigationSystem;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 class BSTNode {
     String key; // Nama lokasi (misalnya, "Gedung A")
     BSTNode left, right;
@@ -9,24 +12,47 @@ class BSTNode {
         this.left = this.right = null;
     }
 
+    // Minimum or leftmost value
     public String minValue() {
         return this.left == null ? this.key : this.left.minValue();
     }
 
     // Inorder traversal
-    public void inorderRec() {
+    public void inorder() {
         if (this.left != null) {
-            this.left.inorderRec();
+            this.left.inorder();
         }
 
         System.out.print(this.key + " ");
         
         if (this.right != null) {
-            this.right.inorderRec();
+            this.right.inorder();
         }
     }
 
-    public void insertRec(String inputKey) {
+    // Breadth-first traversal (BFS)
+    public void breadth() {
+        final Queue<BSTNode> queue = new LinkedList<>();
+
+        queue.add(this);
+
+        while (!queue.isEmpty()) {
+            BSTNode node = queue.poll();
+
+            System.out.print(node.key + " ");
+
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+    }
+
+    // Insert node
+    public void insert(String inputKey) {
         final int comparisonResult = inputKey.compareTo(this.key);
 
         if (comparisonResult < 0) {
@@ -36,16 +62,17 @@ class BSTNode {
         }
     }
 
-    public BSTNode searchRec(String inputKey) {
+    // Search node
+    public BSTNode search(String inputKey) {
         final int comparisonResult = inputKey.compareTo(this.key);
 
         if (comparisonResult < 0) {
             if (this.left != null) {
-                return this.left.searchRec(inputKey);
+                return this.left.search(inputKey);
             }
         } else if (comparisonResult > 0) {
             if (this.right != null) {
-                return this.right.searchRec(inputKey);
+                return this.right.search(inputKey);
             }
         } else {
             return this;
@@ -54,16 +81,17 @@ class BSTNode {
         return null;
     }
 
-    public BSTNode deleteRec(String inputKey) {
+    // Delete node
+    public BSTNode delete(String inputKey) {
         final int comparisonResult = inputKey.compareTo(this.key);
 
         if (comparisonResult < 0) {
             if (this.left != null) {
-                this.left = this.left.deleteRec(inputKey);
+                this.left = this.left.delete(inputKey);
             }
         } else if (comparisonResult > 0) {
             if (this.right != null) {
-                this.right = this.right.deleteRec(inputKey);
+                this.right = this.right.delete(inputKey);
             }
         } else {
             if (this.left == null)
@@ -72,7 +100,7 @@ class BSTNode {
                 return this.left;
             
             this.key = this.right.minValue();
-            this.right = this.right.deleteRec(this.key);
+            this.right = this.right.delete(this.key);
         }
             
         return this;
@@ -91,23 +119,29 @@ public class BST {
         if (this.root == null) {
             this.root = new BSTNode(key);
         } else {
-            this.root.insertRec(key);
+            this.root.insert(key);
         }
     }
 
     // Search node
     public boolean search(String key) {
-        return this.root.searchRec(key) != null;
+        return this.root.search(key) != null;
     }
 
     // Delete node
     public void delete(String key) {
-        this.root = this.root.deleteRec(key);
+        this.root = this.root.delete(key);
     }
 
     // Inorder traversal
     public void inorder() {
-        this.root.inorderRec();
+        this.root.inorder();
+        System.out.println();
+    }
+
+    // Breadth-first traversal (BFS)
+    public void breadth() {
+        this.root.breadth();
         System.out.println();
     }
 }

@@ -23,6 +23,7 @@ public class Vertex {
       final Vertex edgeSource = edge.getSource();
       final Vertex edgeDestination = edge.getDestination();
 
+      // Agar tidak ada duplikat edge dengan arah yang sama
       if ((newEdgeSource == edgeSource && newEdgeDestination == edgeDestination) || (newEdgeSource == edgeDestination && newEdgeDestination == edgeSource)) {
         return;
       }

@@ -60,7 +60,7 @@ public class App {
 
     // Tambahkan sisi antara semua simpul A-Z
     List<Vertex> allVertices = Arrays.asList(
-            a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
+        a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
     );
 
     for (int index = 0; index < allVertices.size() - 1; index++) {
@@ -136,8 +136,11 @@ public class App {
       System.out.println("Waktu Dijkstra (ms): " + dijkstraTime / 1_000_000.0);
 
       // Tampilkan traversal BST
-      System.out.println("Daftar lokasi (inorder):");
+      System.out.println("Daftar lokasi (inorder/depth-first search):");
       bst.inorder();
+
+      System.out.println("Daftar lokasi (breadth-first search):");
+      bst.breadth();
     } else {
       System.out.println("Tidak ada jalur yang ditemukan!");
     }
