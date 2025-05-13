@@ -6,7 +6,76 @@ class BSTNode {
 
     public BSTNode(String key) {
         this.key = key;
-        left = right = null;
+        this.left = this.right = null;
+    }
+
+    public String minValue() {
+        return this.left == null ? this.key : this.left.minValue();
+    }
+
+    // Inorder traversal
+    public void inorderRec() {
+        if (this.left != null) {
+            this.left.inorderRec();
+        }
+
+        System.out.print(this.key + " ");
+        
+        if (this.right != null) {
+            this.right.inorderRec();
+        }
+    }
+
+    public void insertRec(String inputKey) {
+        final int comparisonResult = inputKey.compareTo(this.key);
+
+        if (comparisonResult < 0) {
+            this.left = new BSTNode(inputKey);
+        } else if (comparisonResult > 0) {
+            this.right = new BSTNode(inputKey);
+        }
+    }
+
+    public BSTNode searchRec(String inputKey) {
+        final int comparisonResult = inputKey.compareTo(this.key);
+
+        if (comparisonResult < 0) {
+            if (this.left != null) {
+                return this.left.searchRec(inputKey);
+            }
+        } else if (comparisonResult > 0) {
+            if (this.right != null) {
+                return this.right.searchRec(inputKey);
+            }
+        } else {
+            return this;
+        }
+
+        return null;
+    }
+
+    public BSTNode deleteRec(String inputKey) {
+        final int comparisonResult = inputKey.compareTo(this.key);
+
+        if (comparisonResult < 0) {
+            if (this.left != null) {
+                this.left = this.left.deleteRec(inputKey);
+            }
+        } else if (comparisonResult > 0) {
+            if (this.right != null) {
+                this.right = this.right.deleteRec(inputKey);
+            }
+        } else {
+            if (this.left == null)
+                return this.right;
+            else if (this.right == null)
+                return this.left;
+            
+            this.key = this.right.minValue();
+            this.right = this.right.deleteRec(this.key);
+        }
+            
+        return this;
     }
 }
 
@@ -14,82 +83,31 @@ public class BST {
     private BSTNode root;
 
     public BST() {
-        root = null;
+        this.root = null;
     }
 
     // Insert node
     public void insert(String key) {
-        root = insertRec(root, key);
-    }
-
-    private BSTNode insertRec(BSTNode root, String key) {
-        if (root == null) {
-            root = new BSTNode(key);
-            return root;
+        if (this.root == null) {
+            this.root = new BSTNode(key);
+        } else {
+            this.root.insertRec(key);
         }
-        if (key.compareTo(root.key) < 0)
-            root.left = insertRec(root.left, key);
-        else if (key.compareTo(root.key) > 0)
-            root.right = insertRec(root.right, key);
-        return root;
     }
 
     // Search node
     public boolean search(String key) {
-        return searchRec(root, key) != null;
-    }
-
-    private BSTNode searchRec(BSTNode root, String key) {
-        if (root == null || root.key.equals(key))
-            return root;
-        if (key.compareTo(root.key) < 0)
-            return searchRec(root.left, key);
-        return searchRec(root.right, key);
+        return this.root.searchRec(key) != null;
     }
 
     // Delete node
     public void delete(String key) {
-        root = deleteRec(root, key);
-    }
-
-    private BSTNode deleteRec(BSTNode root, String key) {
-        if (root == null)
-            return root;
-        if (key.compareTo(root.key) < 0)
-            root.left = deleteRec(root.left, key);
-        else if (key.compareTo(root.key) > 0)
-            root.right = deleteRec(root.right, key);
-        else {
-            if (root.left == null)
-                return root.right;
-            else if (root.right == null)
-                return root.left;
-            root.key = minValue(root.right);
-            root.right = deleteRec(root.right, root.key);
-        }
-        return root;
-    }
-
-    private String minValue(BSTNode root) {
-        String minv = root.key;
-        while (root.left != null) {
-            minv = root.left.key;
-            root = root.left;
-        }
-        return minv;
+        this.root = this.root.deleteRec(key);
     }
 
     // Inorder traversal
     public void inorder() {
-        inorderRec(root);
+        this.root.inorderRec();
         System.out.println();
-    }
-
-    private void inorderRec(BSTNode root) {
-        if (root != null) {
-            inorderRec(root.left);
-            System.out.print(root.key + " ");
-            inorderRec(root.right);
-        }
     }
 }
