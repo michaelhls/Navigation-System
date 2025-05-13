@@ -1,88 +1,6 @@
 package NavigationSystem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.PriorityQueue;
 import java.util.*;
-
-class VertexMap<T> extends HashTable<Vertex, T> {
-  private static final int HASH_TABLE_SIZE = 25;
-
-  public VertexMap() {
-    super(HASH_TABLE_SIZE);
-  }
-
-  @Override
-  protected int hashFunction(final Vertex key) {
-    return Math.abs(key.toString().hashCode()) % HASH_TABLE_SIZE;
-  }
-}
-
-class DistanceMap extends VertexMap<Double> {
-  public DistanceMap(final Vertex source) {
-    this.set(source, 0.0);
-  }
-
-  @Override
-  public Double get(final Vertex key) {
-    final Double distance = super.get(key);
-
-    return distance == null ? Double.MAX_VALUE : distance;
-  }
-}
-
-class Dijkstra {
-  private VertexMap<Vertex> previousMap;
-
-  public Dijkstra(final Vertex start) {
-    this.previousMap = new VertexMap<Vertex>();;
-
-    final DistanceMap distanceMap = new DistanceMap(start);
-    final PriorityQueue<HashTable.Entry<Vertex, Double>> queue = new PriorityQueue<>(HashTable.Entry.comparingByValue());
-
-    queue.add(new HashTable.Entry<>(start, 0.0));
-
-    while (!queue.isEmpty()) {
-      final HashTable.Entry<Vertex, Double> source = queue.poll();
-      final Vertex sourceVector = source.getKey();
-
-      for (final Edge edge: sourceVector.getEdges()) {
-        final Vertex edgeDestination = edge.getDestination();
-        final double newDistance = source.getValue() + edge.getWeight();
-
-        if (newDistance < distanceMap.get(edgeDestination)) {
-          distanceMap.set(edgeDestination, newDistance);
-          queue.add(new HashTable.Entry<>(edgeDestination, newDistance));
-          
-          this.previousMap.set(edgeDestination, sourceVector);
-        }
-      }
-    }
-  }
-
-  public ArrayList<Vertex> getShortestPathTo(final Vertex destination) {
-    final ArrayList<Vertex> result = new ArrayList<>(1);
-    result.add(destination);
-
-    Vertex current = destination;
-    Vertex previous;
-    boolean reachable = false;
-
-    while ((previous = this.previousMap.get(current)) != null) {
-      result.add(previous);
-      current = previous;
-      reachable = true;
-    }
-
-    Collections.reverse(result);
-
-    if (!reachable && result.size() == 1 && result.get(0) != destination) {
-      return new ArrayList<>(); // Jalur tidak valid
-    }
-
-    return result;
-  }
-}
 
 public class App {
   public static void main(String[] args) {
@@ -123,8 +41,17 @@ public class App {
             "Gedung M", "Gedung N", "Gedung O", "Gedung P", "Gedung Q", "Gedung R",
             "Gedung S", "Gedung T", "Gedung U", "Gedung V", "Gedung W", "Gedung X",
             "Gedung Y", "Gedung Z"};
+    
+    // Sesi warmup untuk JVM
+    for (int warmupIndex = 0; warmupIndex < 1000; warmupIndex++) {
+      for (String loc: locations) {
+        bst.insert(loc);
+      }
+    }
+    
     long bstInsertTime = 0;
-    for (String loc : locations) {
+    
+    for (String loc: locations) {
       long start = System.nanoTime();
       bst.insert(loc);
       bstInsertTime += System.nanoTime() - start;
@@ -147,6 +74,13 @@ public class App {
     System.out.print("Masukkan lokasi tujuan: ");
     String endName = scanner.nextLine();
 
+    // Sesi warmup untuk JVM
+    for (int warmupIndex = 0; warmupIndex < 1000; warmupIndex++) {
+      if (bst.search(startName)) {
+        bst.search(endName);
+      }
+    }
+
     // Validasi menggunakan BST
     long bstSearchTime = System.nanoTime();
     if (!bst.search(startName) || !bst.search(endName)) {
@@ -161,6 +95,12 @@ public class App {
     for (Vertex vertex : Arrays.asList(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)) {
       if (vertex.toString().equals(startName)) start = vertex;
       if (vertex.toString().equals(endName)) end = vertex;
+    }
+
+    // Sesi warmup untuk JVM
+    for (int warmupIndex = 0; warmupIndex < 1000; warmupIndex++) {
+      Dijkstra dijkstra = new Dijkstra(start);
+      ArrayList<Vertex> path = dijkstra.getShortestPathTo(end);
     }
 
     // Jalankan Dijkstra (akan diintegrasikan dengan kode dari Anggota 2)
