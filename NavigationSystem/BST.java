@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 class BSTNode {
-    String key; // Nama lokasi (misalnya, "Gedung A")
-    BSTNode left, right;
+    public String key; // Nama lokasi (misalnya, "Gedung A")
+    public BSTNode left, right;
 
     public BSTNode(String key) {
         this.key = key;
