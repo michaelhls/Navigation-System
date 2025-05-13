@@ -21,26 +21,34 @@ public class App {
     Vertex k = new Vertex("Gedung K");
     Vertex l = new Vertex("Gedung L");
     Vertex m = new Vertex("Gedung M");
-    Vertex n = new Vertex("Gedung N");
-    Vertex o = new Vertex("Gedung O");
-    Vertex p = new Vertex("Gedung P");
-    Vertex q = new Vertex("Gedung Q");
-    Vertex r = new Vertex("Gedung R");
-    Vertex s = new Vertex("Gedung S");
-    Vertex t = new Vertex("Gedung T");
-    Vertex u = new Vertex("Gedung U");
-    Vertex v = new Vertex("Gedung V");
-    Vertex w = new Vertex("Gedung W");
-    Vertex x = new Vertex("Gedung X");
-    Vertex y = new Vertex("Gedung Y");
-    Vertex z = new Vertex("Gedung Z");
+
+    // Koneksi antar satu vertex dengan lain dengan weight acak untuk membentuk graf yang ideal
+    i.connect(71, a);
+    i.connect(102, g);
+    i.connect(106, k);
+    i.connect(91, j);
+    a.connect(62, f);
+    a.connect(85, e);
+    a.connect(72, j);
+    h.connect(43, m);
+    h.connect(94, k);
+    a.connect(23, l);
+    b.connect(48, g);
+    m.connect(43, j);
+    d.connect(84, e);
+    j.connect(89, k);
+    g.connect(78, f);
+    b.connect(54, l);
+    d.connect(69, h);
+    d.connect(72, c);
+    c.connect(56, e);
+    m.connect(63, l);
+    b.connect(24, m);
 
     // Tambahkan ke BST
     String[] locations = {"Gedung A", "Gedung B", "Gedung C", "Gedung D", "Gedung E", "Gedung F",
             "Gedung G", "Gedung H", "Gedung I", "Gedung J", "Gedung K", "Gedung L",
-            "Gedung M", "Gedung N", "Gedung O", "Gedung P", "Gedung Q", "Gedung R",
-            "Gedung S", "Gedung T", "Gedung U", "Gedung V", "Gedung W", "Gedung X",
-            "Gedung Y", "Gedung Z"};
+            "Gedung M"};
     
     // Sesi warmup untuk JVM
     for (int warmupIndex = 0; warmupIndex < 1000; warmupIndex++) {
@@ -56,17 +64,6 @@ public class App {
       bst.insert(loc);
       long end = System.nanoTime();
       bstInsertTime += end - start;
-    }
-
-    // Tambahkan sisi antara semua simpul A-Z
-    List<Vertex> allVertices = Arrays.asList(
-        a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z
-    );
-
-    for (int index = 0; index < allVertices.size() - 1; index++) {
-      Vertex current = allVertices.get(index);
-      Vertex next = allVertices.get(index + 1);
-      current.connect(1, next); // Bobot 1 m
     }
 
     // Input pengguna
@@ -96,7 +93,7 @@ public class App {
     // Cari vertex berdasarkan nama
     Vertex start = null, end = null;
     
-    for (Vertex vertex : Arrays.asList(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)) {
+    for (Vertex vertex : Arrays.asList(a, b, c, d, e, f, g, h, i, j, k, l, m)) {
       if (vertex.toString().equals(startName)) start = vertex;
       if (vertex.toString().equals(endName)) end = vertex;
     }

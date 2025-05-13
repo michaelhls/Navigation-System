@@ -56,9 +56,17 @@ class BSTNode {
         final int comparisonResult = inputKey.compareTo(this.key);
 
         if (comparisonResult < 0) {
-            this.left = new BSTNode(inputKey);
+            if (this.left == null) {
+                this.left = new BSTNode(inputKey);
+            } else {
+                this.left.insert(inputKey);
+            }
         } else if (comparisonResult > 0) {
-            this.right = new BSTNode(inputKey);
+            if (this.right == null) {
+                this.right = new BSTNode(inputKey);
+            } else {
+                this.right.insert(inputKey);
+            }
         }
     }
 
