@@ -45,7 +45,7 @@ public abstract class HashTable<K, V> {
     final ArrayList<Entry<K, V>> entries = this.table[this.getIndex(key)];
 
     for (final Entry<K, V> entry: entries) {
-      if (entry.key == key) {
+      if (entry.key.equals(key)) {
         entry.value = value;
         return;
       }
@@ -56,7 +56,7 @@ public abstract class HashTable<K, V> {
 
   public V get(final K key) {
     for (final Entry<K, V> entry: this.table[this.getIndex(key)]) {
-      if (entry.key == key) {
+      if (entry.key.equals(key)) {
         return entry.value;
       }
     }
@@ -65,7 +65,7 @@ public abstract class HashTable<K, V> {
   }
 
   public void remove(final K key) throws IllegalArgumentException {
-    this.table[this.getIndex(key)].removeIf(entry -> entry.key == key);
+    this.table[this.getIndex(key)].removeIf(entry -> entry.key.equals(key));
   }
 
   private int getIndex(final K key) throws IllegalArgumentException {
